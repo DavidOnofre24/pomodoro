@@ -11,86 +11,105 @@ class ProfileView extends StatelessWidget {
     return SafeArea(
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 15),
-        child: Column(
+        child: const Column(
           children: [
-            const Center(
+            Center(
               child: Text(
                 'Profile',
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
             ),
-            const SizedBox(height: 20),
-            ClipPath(
-              clipper: DeformedCircleClipper(),
-              child: Container(
-                padding: const EdgeInsets.all(30),
-                color: CustomColors.pink,
-                child: const CircleAvatar(
-                  radius: 50,
-                  backgroundColor: Colors.white,
-                  child: Text(
-                    'J',
-                    style: TextStyle(
-                      fontSize: 35,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text('jackson@gmail.com', style: TextStyle(fontSize: 20)),
-            const SizedBox(height: 20),
-            BlocBuilder<StatisticsCubit, StatisticsState>(
-                bloc: context.read<StatisticsCubit>(),
-                builder: (context, state) {
-                  if (state.statistics.isEmpty) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  return Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ItemStatistic(
-                            backgroundColor: CustomColors.pink,
-                            title: 'Focus',
-                            quantity:
-                                state.statistics[0].completedCycles.toString(),
-                            minutes: '${state.statistics[0].minutes} min',
-                          ),
-                          const SizedBox(width: 20),
-                          ItemStatistic(
-                            backgroundColor: Colors.white,
-                            title: 'Breaks short',
-                            quantity:
-                                state.statistics[1].completedCycles.toString(),
-                            minutes: '${state.statistics[1].minutes} min',
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          ItemStatistic(
-                            backgroundColor: Colors.white,
-                            title: 'Breaks long',
-                            quantity:
-                                state.statistics[2].completedCycles.toString(),
-                            minutes: '${state.statistics[2].minutes} min',
-                          ),
-                        ],
-                      ),
-                    ],
-                  );
-                }),
+            SizedBox(height: 20),
+            AvatarWidget(),
+            SizedBox(height: 20),
+            Text('jackson@gmail.com', style: TextStyle(fontSize: 20)),
+            SizedBox(height: 20),
+            StatisticsWidget(),
           ],
         ),
       ),
     );
+  }
+}
+
+class AvatarWidget extends StatelessWidget {
+  const AvatarWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipPath(
+      clipper: DeformedCircleClipper(),
+      child: Container(
+        padding: const EdgeInsets.all(30),
+        color: CustomColors.pink,
+        child: const CircleAvatar(
+          radius: 50,
+          backgroundColor: Colors.white,
+          child: Text(
+            'J',
+            style: TextStyle(
+              fontSize: 35,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class StatisticsWidget extends StatelessWidget {
+  const StatisticsWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<StatisticsCubit, StatisticsState>(
+        bloc: context.read<StatisticsCubit>(),
+        builder: (context, state) {
+          if (state.statistics.isEmpty) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ItemStatistic(
+                    backgroundColor: CustomColors.pink,
+                    title: 'Focus',
+                    quantity: state.statistics[0].completedCycles.toString(),
+                    minutes: '${state.statistics[0].minutes} min',
+                  ),
+                  const SizedBox(width: 20),
+                  ItemStatistic(
+                    backgroundColor: Colors.white,
+                    title: 'Breaks short',
+                    quantity: state.statistics[1].completedCycles.toString(),
+                    minutes: '${state.statistics[1].minutes} min',
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  ItemStatistic(
+                    backgroundColor: Colors.white,
+                    title: 'Breaks long',
+                    quantity: state.statistics[2].completedCycles.toString(),
+                    minutes: '${state.statistics[2].minutes} min',
+                  ),
+                ],
+              ),
+            ],
+          );
+        });
   }
 }
 
