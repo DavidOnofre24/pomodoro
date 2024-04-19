@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pomodoro/config/constants/colors.dart';
+import 'package:pomodoro/presentacion/providers/statistics/cubit/statistics_cubit.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -40,103 +42,99 @@ class ProfileView extends StatelessWidget {
             const SizedBox(height: 20),
             const Text('jackson@gmail.com', style: TextStyle(fontSize: 20)),
             const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: CustomColors.pink,
-                    ),
-                    padding: const EdgeInsets.all(20),
-                    child: const Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text('Today focus',
-                            style:
-                                TextStyle(fontSize: 20, color: Colors.black)),
-                        SizedBox(height: 10),
-                        Text(
-                          '16',
-                          style: TextStyle(
-                            fontSize: 35,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
+            BlocBuilder<StatisticsCubit, StatisticsState>(
+                bloc: context.read<StatisticsCubit>(),
+                builder: (context, state) {
+                  if (state.statistics.isEmpty) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ItemStatistic(
+                            backgroundColor: CustomColors.pink,
+                            title: 'Focus',
+                            quantity:
+                                state.statistics[0].completedCycles.toString(),
+                            minutes: '${state.statistics[0].minutes} min',
                           ),
-                        ),
-                        SizedBox(height: 10),
-                        Text('320 min',
-                            style:
-                                TextStyle(fontSize: 20, color: Colors.black)),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.white,
-                    ),
-                    padding: const EdgeInsets.all(20),
-                    child: const Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text('Today focus',
-                            style:
-                                TextStyle(fontSize: 20, color: Colors.black)),
-                        SizedBox(height: 10),
-                        Text(
-                          '16',
-                          style: TextStyle(
-                            fontSize: 35,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
+                          const SizedBox(width: 20),
+                          ItemStatistic(
+                            backgroundColor: Colors.white,
+                            title: 'Breaks short',
+                            quantity:
+                                state.statistics[1].completedCycles.toString(),
+                            minutes: '${state.statistics[1].minutes} min',
                           ),
-                        ),
-                        SizedBox(height: 10),
-                        Text('320 min',
-                            style:
-                                TextStyle(fontSize: 20, color: Colors.black)),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: Colors.white,
-              ),
-              padding: const EdgeInsets.all(20),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text('Today focus',
-                      style: TextStyle(fontSize: 20, color: Colors.black)),
-                  SizedBox(height: 10),
-                  Text(
-                    '16',
-                    style: TextStyle(
-                      fontSize: 35,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Text('320 min',
-                      style: TextStyle(fontSize: 20, color: Colors.black)),
-                ],
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          ItemStatistic(
+                            backgroundColor: Colors.white,
+                            title: 'Breaks long',
+                            quantity:
+                                state.statistics[2].completedCycles.toString(),
+                            minutes: '${state.statistics[2].minutes} min',
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                }),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ItemStatistic extends StatelessWidget {
+  final Color backgroundColor;
+  final String title;
+  final String quantity;
+  final String minutes;
+
+  const ItemStatistic({
+    required this.backgroundColor,
+    required this.title,
+    required this.quantity,
+    required this.minutes,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: backgroundColor,
+        ),
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text(title,
+                style: const TextStyle(fontSize: 20, color: Colors.black)),
+            const SizedBox(height: 10),
+            Text(
+              quantity,
+              style: const TextStyle(
+                fontSize: 35,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
               ),
             ),
+            const SizedBox(height: 10),
+            Text(minutes,
+                style: const TextStyle(fontSize: 20, color: Colors.black)),
           ],
         ),
       ),
