@@ -114,7 +114,7 @@ class TimerCubit extends Cubit<TimerState> {
       ));
     } else {
       final player = AudioPlayer();
-      player.play(DeviceFileSource('assets/song.mp3'));
+      player.play(AssetSource('song.mp3'));
       saveTime(
           currentState.timerType, currentState.duration.inMinutes.toString());
       emit(state.copyWith(

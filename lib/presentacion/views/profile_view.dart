@@ -135,7 +135,7 @@ class ItemStatistic extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           color: backgroundColor,
         ),
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
