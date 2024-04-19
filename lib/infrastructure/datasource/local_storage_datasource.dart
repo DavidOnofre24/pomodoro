@@ -39,20 +39,22 @@ class LocalStorageDatasource {
 
   Future<void> saveFinishedLongBreaks(int minutes) async {
     final finishedLongBreaks = (await getFinishedLongBreaks() ?? 0) + 1;
-
+    final minutesLongBreaks = (await getMinutesLongBreaks() ?? 0) + minutes;
     await sharedPreferences.setInt('finishedLongBreaks', finishedLongBreaks);
-    await sharedPreferences.setInt('minutesLongBreaks', minutes);
+    await sharedPreferences.setInt('minutesLongBreaks', minutesLongBreaks);
   }
 
   Future<void> saveFinishedPomodoros(int minutes) async {
     final finishedPomodoros = (await getFinishedPomodoros() ?? 0) + 1;
+    final minutesPomodoros = (await getMinutesPomodoros() ?? 0) + minutes;
     await sharedPreferences.setInt('finishedPomodoros', finishedPomodoros);
-    await sharedPreferences.setInt('minutesPomodoros', minutes);
+    await sharedPreferences.setInt('minutesPomodoros', minutesPomodoros);
   }
 
   Future<void> saveFinishedShortBreaks(int minutes) async {
     final finishedShortBreaks = (await getFinishedShortBreaks() ?? 0) + 1;
+    final minutesShortBreaks = (await getMinutesShortBreaks() ?? 0) + minutes;
     await sharedPreferences.setInt('finishedShortBreaks', finishedShortBreaks);
-    await sharedPreferences.setInt('minutesShortBreaks', minutes);
+    await sharedPreferences.setInt('minutesShortBreaks', minutesShortBreaks);
   }
 }

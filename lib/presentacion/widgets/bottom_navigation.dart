@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pomodoro/config/constants/colors.dart';
+import 'package:pomodoro/presentacion/providers/statistics/cubit/statistics_cubit.dart';
 
 class CustomBottomNavigation extends StatelessWidget {
   final int currentIndex;
@@ -14,6 +16,7 @@ class CustomBottomNavigation extends StatelessWidget {
         break;
 
       case 1:
+        context.read<StatisticsCubit>().init();
         context.go('/home/1');
         break;
     }

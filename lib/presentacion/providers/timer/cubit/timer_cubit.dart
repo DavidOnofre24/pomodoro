@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:pomodoro/domain/entities/timer.dart';
 import 'package:pomodoro/domain/repositories/save_data_repository.dart';
 import 'package:pomodoro/domain/repositories/statistics_repository.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 part 'timer_state.dart';
 
@@ -112,6 +113,8 @@ class TimerCubit extends Cubit<TimerState> {
         status: TimerStatus.running,
       ));
     } else {
+      final player = AudioCache();
+      player.play('song.mp3');
       saveTime(
           currentState.timerType, currentState.duration.inMinutes.toString());
       emit(state.copyWith(
@@ -127,13 +130,28 @@ class TimerCubit extends Cubit<TimerState> {
   void saveTime(TimerType timerType, String data) {
     switch (timerType) {
       case TimerType.pomodoro:
-        statisticsRepository.saveFinishedLongBreaks(state.duration.inMinutes);
+        statisticsRepository.saveFinishedPomodoros(state.duration.inMinutes);
         break;
       case TimerType.shortBreak:
         statisticsRepository.saveFinishedShortBreaks(state.duration.inMinutes);
         break;
       case TimerType.longBreak:
         statisticsRepository.saveFinishedLongBreaks(state.duration.inMinutes);
+        break;
+    }
+    initTimer(timerType: timerType);
+  }
+
+  void saveMinutes(TimerType timerType, String data) {
+    switch (timerType) {
+      case TimerType.pomodoro:
+        saveDataRepository.saveTime('pomodoro', data);
+        break;
+      case TimerType.shortBreak:
+        saveDataRepository.saveTime('shortBreak', data);
+        break;
+      case TimerType.longBreak:
+        saveDataRepository.saveTime('longBreak', data);
         break;
     }
     initTimer(timerType: timerType);

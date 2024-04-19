@@ -214,7 +214,7 @@ class HomeView extends StatelessWidget {
                                                     }
                                                     context
                                                         .read<TimerCubit>()
-                                                        .saveTime(
+                                                        .saveMinutes(
                                                           state.timerType,
                                                           values,
                                                         );

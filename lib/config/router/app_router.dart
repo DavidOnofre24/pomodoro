@@ -23,7 +23,7 @@ final appRouter = GoRouter(
           BlocProvider(
             create: (context) => StatisticsCubit(
               getStatisticsUseCase: getIt.get(),
-            )..init(),
+            ),
           ),
         ],
         child: HomeScreen(
